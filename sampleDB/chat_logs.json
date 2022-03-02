@@ -1,0 +1,18 @@
+[   
+    {
+        "user_id":3,
+        "logs":[
+            {
+                "message":"Hello",
+                "is_user": true,
+                "timestamp":"022-02-28T12:12:09+00:00" 
+            },
+            {
+                "message":"Hey there its Amica, whatsup?.",
+                "is_user":false,
+                "timestamp":"022-02-28T12:12:09+00:00"
+            }
+        ] 
+        
+    }
+]

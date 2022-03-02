@@ -1,0 +1,30 @@
+[
+    {
+        "user_id":"1",
+        "chat_log":[
+            {
+                "message":"Hello",
+                "user":true,
+                "datetime":"2022-02-28T12:12:09+00:00"
+            }, 
+            {
+                "message":"Hello it's Amica.",
+                "user":false,
+                "datetime":"2022-02-28T12:12:09+00:00"
+            }
+        ]
+    }, 
+    {
+        "user_id":"2",
+        "chat_log":[
+            {
+            "message":"Hello",
+            "user":true
+            }, 
+            {
+            "message":"Hey there, whatsup?.",
+            "user":false
+            } 
+        ]
+    }
+]

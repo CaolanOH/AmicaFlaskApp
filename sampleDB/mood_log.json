@@ -1,0 +1,6 @@
+{
+    "user_id":"1",
+    "mood":["Stressed", "Anxious", "Sad"],
+    "datetime":"2022-02-28T12:12:09+00:00",
+    "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+}

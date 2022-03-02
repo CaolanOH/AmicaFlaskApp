@@ -1,0 +1,12 @@
+[
+    {
+        "title": "script1",
+        "description": "dfsfsdfs",
+        "responses": ["", "",""]
+    },
+    {
+        "title": "script2",
+        "description": "dfsfsdfs",
+        "responses": ["", "",""]
+    }
+]

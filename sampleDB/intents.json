@@ -1,0 +1,16 @@
+[
+    {
+        "tag": "greeting",
+        "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day", "Whats up"],
+        "responses": ["Hello!", "Good to see you again!", "Hi there, how can I help?"],
+        "context_set": [
+            {
+               "name":"script01",
+               "responses": ["Would you like log your mood?"]
+            },{
+                "name":"script02",
+                "response":["I have a breathing exercise you could try?", "Okay so you take a deep breath.."]
+            }]
+       }
+
+]

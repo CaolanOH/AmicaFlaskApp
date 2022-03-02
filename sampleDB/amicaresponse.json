@@ -1,0 +1,14 @@
+[
+    {
+        "tag":"greeting",
+        "response":"Hey whatsup, it's amica",
+        "context":[
+            {
+               "name":"script01",
+               "responses": ["Would you like log your mood?"]
+            },{
+                "name":"script02",
+                "response":["I have a breathing exercise you could try?", "Okay so you take a deep breath.."]
+            }]
+    }
+]

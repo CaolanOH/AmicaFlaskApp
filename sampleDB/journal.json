@@ -1,0 +1,12 @@
+[
+    {
+        "user_id": "1",
+        "timestamp":"2022-02-28T12:12:09+00:00",
+        "journal_body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilisis tempus hendrerit. Proin diam mi, eleifend nec molestie in, varius in purus. Aliquam nec euismod justo. Morbi auctor fermentum purus consequat pellentesque. Donec auctor vehicula justo ut tempor. Maecenas malesuada dolor at magna ornare ornare. Etiam imperdiet laoreet turpis vel mattis. Cras suscipit, diam sed fringilla ornare, magna augue imperdiet tortor, quis condimentum leo sapien sed nunc. Fusce porta eget nisl in pulvinar. Aliquam id quam sit amet elit luctus blandit. Nunc at turpis a ex tempus faucibus condimentum vel turpis."
+    },
+    {
+        "user_id": "1",
+        "timestamp":"2022-02-28T12:12:09+00:00",
+        "journal_body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilisis tempus hendrerit. Proin diam mi, eleifend nec molestie in, varius in purus. Aliquam nec euismod justo. Morbi auctor fermentum purus consequat pellentesque. Donec auctor vehicula justo ut tempor. Maecenas malesuada dolor at magna ornare ornare. Etiam imperdiet laoreet turpis vel mattis. Cras suscipit, diam sed fringilla ornare, magna augue imperdiet tortor, quis condimentum leo sapien sed nunc. Fusce porta eget nisl in pulvinar. Aliquam id quam sit amet elit luctus blandit. Nunc at turpis a ex tempus faucibus condimentum vel turpis."
+    }
+]
