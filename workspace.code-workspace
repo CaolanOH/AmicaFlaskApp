@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../chatbot-neural"
+		},
+		{
+			"path": "../../../AdvancedJavaScript/MyReactApps/amica-chatbot"
+		},
+		{
+			"path": "../../../AdvancedJavaScript/socket-io-chat-app"
+		},
+		{
+			"path": "../python-socketio"
+		}
+	],
+	"settings": {}
+}

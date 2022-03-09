@@ -66,7 +66,12 @@ class User(Document):
                         "email": user['email']
                         }
             token = create_access_token(identity=Util.parse_json(user_dict))
-            response = token
-            return response
+            res = {
+                "username": user['username'],
+                "email": user['email'],
+                "access_token": token,
+                "status": 200
+            }
+            return res
         return {"error":"Authorization denied", "status":401}
 
