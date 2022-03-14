@@ -10,12 +10,14 @@ from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation, Dropout
 from tensorflow.keras.optimizers import SGD
-
 from pathlib import Path 
 # This stores whatever the working directory is to the variable working__directory
 working_directory = Path(__file__).absolute().parent
 
-## ****** NLP Text Processing on intents ******
+
+
+
+## ****** NLP Text Processing on intents json file ******
 
 # Initializing Lemmatizer from nltk
 ## Lemmatization is more complex than stemming but is more accurate and has less chances of error
@@ -44,12 +46,13 @@ for intent in intents['intents']:
             tags.append(intent['tag'])
 
 # Comment this
-words = [lemmatizer.lemmatize(word) for word in words if word not in ignored_characters]
+words = [lemmatizer.lemmatize(word.lower()) for word in words if word not in ignored_characters]
 words = sorted(set(words))
 tags = sorted(set(tags))
 
+# Creating pickle files of words and tags
 pickle.dump(words, open('words.pkl', 'wb')) 
-pickle.dump(words_and_tags, open('words_and_tags.pkl', 'wb')) 
+pickle.dump(tags, open('tags.pkl', 'wb')) 
 
 # Creating the training array for the neural network to learn
 training = []
@@ -70,6 +73,10 @@ for wt in words_and_tags:
     output_row[tags.index(wt[1])] = 1
     training.append([b_o_w, output_row])
 
+
+
+## ****** Preparing training data for model ******
+
 # Shuffling training data
 random.shuffle(training)
 # training data must be converted to a numpy array for the model 
@@ -80,8 +87,12 @@ training = np.array(training, dtype=object)
 train_x = list(training[:, 0])
 train_y = list(training[:, 1])
 
+
+## ****** Building sequential model, training model, saving model ******
+
+
 #Building model
-## This is a sequential model because text is a sequence
+## Text is a sequence of data so we use a Sequential Model
 model = Sequential()
 # First layer is a standard 128 neurons. the shape is equal to train_x,  the activation function is a rectitified linear function
 model.add(Dense(128, input_shape=(len(train_x[0]),), activation='relu'))
@@ -96,7 +107,7 @@ sgd = SGD(learning_rate=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 # loss function is categorical crossentropy
 model.compile(optimizer=sgd,loss="categorical_crossentropy",  metrics=['accuracy'])
 # Fitting model
-saved_model = model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=1)
+saved_model = model.fit(np.array(train_x), np.array(train_y), epochs=300, batch_size=5, verbose=1)
 # Saving model to h5 file
 model.save('chatbot_model.h5', saved_model)
 print("done")

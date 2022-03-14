@@ -1,20 +1,26 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "../chatbot-neural"
-		},
-		{
-			"path": "../../../AdvancedJavaScript/MyReactApps/amica-chatbot"
-		},
-		{
-			"path": "../../../AdvancedJavaScript/socket-io-chat-app"
-		},
-		{
-			"path": "../python-socketio"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../chatbot-neural"
+    },
+    {
+      "path": "../../../AdvancedJavaScript/MyReactApps/amica-chatbot"
+    },
+    {
+      "path": "../../../AdvancedJavaScript/socket-io-chat-app"
+    },
+    {
+      "path": "../python-socketio"
+    },
+    {
+      "path": "../chatbot"
+    },
+    {
+      "path": "../chatbot-v2"
+    }
+  ],
+  "settings": {}
 }

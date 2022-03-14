@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_socketio import SocketIO
+import socketio
 from flask_cors import CORS
 
 

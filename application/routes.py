@@ -1,7 +1,7 @@
 from application import app, models, socket, chatbot
 from flask import jsonify, request, make_response
 from flask_jwt_extended import JWTManager,jwt_required, get_jwt_identity   
-import asyncio
+
 #jwt = JWT(app, models.User.authenticate, models.User.identity)
 jwtManager = JWTManager(app)
 
@@ -75,7 +75,7 @@ def connect():
     sid = request.sid
     print(f"User {sid} connected")
 
-@socket.on('message_sent')
+@socket.on('msg_from_react')
 def message_sent(message):
     user_message = message['message'] 
     sid = request.sid
@@ -87,7 +87,8 @@ def message_sent(message):
     #socket.emit("message_received", amicaResponse, to=sid)
     #socket.emit("message_received", amicaResponse, to=sid)
     #reverse = message[::-1]
-    socket.emit("message_received", "from amica backend", to=sid)
+    socket.sleep(0.3)
+    socket.emit("msg_from_flask", amicaResponse, to=sid)
 
 @socket.event
 def disconnect(sid):

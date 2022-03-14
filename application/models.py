@@ -28,7 +28,7 @@ class User(Document):
     }
 
     def saveUser(data):
-        # Creating user Dict
+        # Creating user Dictionary
         user =  User(
             username = data['username'],
             email = data['email'],
