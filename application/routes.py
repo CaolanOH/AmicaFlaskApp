@@ -1,12 +1,14 @@
-from application import app, models, socket, chatbot
+from application import app, models, socket, chatbot, chat_log
 from flask import jsonify, request, make_response
 from flask_jwt_extended import JWTManager,jwt_required, get_jwt_identity   
-
+import datetime
 #jwt = JWT(app, models.User.authenticate, models.User.identity)
 jwtManager = JWTManager(app)
 
 
 #       **** Routes / Controllers ****
+
+
 
 #       **** User Routes / Controllers ****
 # Register Route
@@ -75,20 +77,30 @@ def connect():
     sid = request.sid
     print(f"User {sid} connected")
 
+# This function takes in message, assigns message from user to user_message. Sends the user_message to chatbot model. 
+# Creates datetime object to get current datetime and convert to a string. Create res object. 
+# This object will be saved to the db and sent to user. Pause the for 0.3 seconds to create the illusion that 
+# the chatbot is thinking. Sends res object back to React Native application.
 @socket.on('msg_from_react')
 def message_sent(message):
-    user_message = message['message'] 
     sid = request.sid
-    print(f'THis is the message the user sent: {user_message}')
-    #send message to chatbot
+    user_message = message['message'] 
     amicaResponse = chatbot.chat(user_message)
-    print(f'This is amicas response {amicaResponse}')
-    #amicaResponse = async messageAmica(message) // this function should return the reponse
-    #socket.emit("message_received", amicaResponse, to=sid)
-    #socket.emit("message_received", amicaResponse, to=sid)
-    #reverse = message[::-1]
+    user = get_jwt_identity()
+    print(user)
+    dateTimeObj = datetime.datetime.today()
+    timestampStr = dateTimeObj.strftime("%H:%M:%S.%f - %b %d %Y")
+    res = {
+       
+        "msg": amicaResponse['response'],
+        "msgAuthor": "amica",
+        "timestamp": timestampStr,
+        "context": amicaResponse['context']
+    }
+    #chat_log.Chat_log.saveMessage(res)
+    print(res)
     socket.sleep(0.3)
-    socket.emit("msg_from_flask", amicaResponse, to=sid)
+    socket.emit("msg_from_flask", res, to=sid)
 
 @socket.event
 def disconnect(sid):

@@ -61,12 +61,14 @@ class User(Document):
         # Find the user in the data by the email supplied
         user = User.objects(email=data['email']).get()
         if user and check_password_hash(user['password'],data['password']):
-            user_dict = {"id":user['id'],
+            user_dict = {
+                        "id":user['id'],
                         "username":user['username'],
                         "email": user['email']
                         }
             token = create_access_token(identity=Util.parse_json(user_dict))
             res = {
+                "id": user["id"],
                 "username": user['username'],
                 "email": user['email'],
                 "access_token": token,
