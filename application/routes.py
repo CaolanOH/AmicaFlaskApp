@@ -1,6 +1,6 @@
-from application import app, models, socket, chatbot, chat_log
+from application import app, models, socket, chatbot, chat_log, mood_log, Journal
 from flask import jsonify, request, make_response
-from flask_jwt_extended import JWTManager,jwt_required, get_jwt_identity   
+from flask_jwt_extended import JWTManager,jwt_required, get_jwt_identity, decode_token   
 import datetime
 #jwt = JWT(app, models.User.authenticate, models.User.identity)
 jwtManager = JWTManager(app)
@@ -32,6 +32,63 @@ def login():
      # Changing python Dict from response using Jsonify and return JSON response ot client
   
     return make_response(jsonify(response), response['status'])
+
+# Chat log route
+#@app.route('/users/chat_log', methods=['GET'])
+#@jwt_required()
+#def get_chat_log():
+#    identity = get_jwt_identity()
+#    id = identity['id']['$oid']
+#    print(id)
+#    response = chat_log.Chat_log.get_log(id)
+#
+#    return make_response(jsonify(response), response['status'])
+
+
+
+# Mood Routes
+@app.route('/users/mood', methods=['GET'])
+@jwt_required()
+def get_moods():
+    identity = get_jwt_identity()
+    id  = identity['id']['$oid']
+    print("/// This is the user id to get moods with")
+    print(id)
+    response = mood_log.Mood.get_moods(id)
+
+    return make_response(jsonify(response))
+
+@app.route('/users/mood', methods=['POST'])
+@jwt_required()
+def create_mood():
+    mood = request.get_json()
+    identity = get_jwt_identity()
+    id  = identity['id']['$oid']
+    print(id)
+    print("///// Printing mood /////")
+    print(mood)
+    response = mood_log.Mood.save_mood(mood)
+    return make_response(jsonify(response), response['status'])
+
+## Journal Routes
+@app.route('/users/journal', methods=['POST'])
+@jwt_required()
+def create_journal_entry():
+    identity = get_jwt_identity()
+    journal_entry = request.get_json()
+    response = Journal.Journal.save_journal(journal_entry)
+    return  make_response(jsonify(response))
+
+@app.route('/users/journal', methods=['GET'])
+@jwt_required()
+def get_journal_entry():
+    identity = get_jwt_identity()
+    id  = identity['id']['$oid']
+    print("/// This is the user id to get moods with")
+    print(id)
+    response = Journal.get_all_journals(id)
+
+    return make_response(jsonify(response))
 
 
 #       **** Test Routes / Controllers ****
@@ -73,9 +130,20 @@ def protected():
 #       **** Socket.IO ****
 
 @socket.event
-def connect():
+@jwt_required()
+def connect(auth):
     sid = request.sid
-    print(f"User {sid} connected")
+    user = auth
+    identity = get_jwt_identity()
+    print("WebSocket connection established with React Native app")
+  
+    print(identity)
+    
+
+@socket.on('user_login')
+def user_login(user):
+    user= user['email']
+    print(f"My User info:{user}")
 
 # This function takes in message, assigns message from user to user_message. Sends the user_message to chatbot model. 
 # Creates datetime object to get current datetime and convert to a string. Create res object. 
@@ -84,23 +152,40 @@ def connect():
 @socket.on('msg_from_react')
 def message_sent(message):
     sid = request.sid
-    user_message = message['message'] 
-    amicaResponse = chatbot.chat(user_message)
-    user = get_jwt_identity()
-    print(user)
+    token_info = decode_token(message['token'])
+    msg = {
+        "user_id": token_info['sub']['id']['$oid'],
+        "msg":message['msg'],
+        "is_user": message['is_user'],
+        "timestamp": message['timestamp'],
+        "context": message['context']
+    }
+    chat_log.Chat_log.saveMessage(msg)
+    # Save user message with id here.
+    user_msg = message['msg'] 
+    amicaResponse = chatbot.chat(user_msg)
     dateTimeObj = datetime.datetime.today()
-    timestampStr = dateTimeObj.strftime("%H:%M:%S.%f - %b %d %Y")
+    timestampStr = dateTimeObj.isoformat()
     res = {
-       
+        "user_id": token_info['sub']['id']['$oid'],
         "msg": amicaResponse['response'],
-        "msgAuthor": "amica",
+        "is_user": False,
         "timestamp": timestampStr,
         "context": amicaResponse['context']
     }
-    #chat_log.Chat_log.saveMessage(res)
-    print(res)
-    socket.sleep(0.3)
+    # Save amica message here
+    chat_log.Chat_log.saveMessage(res)
+    #socket.sleep(0.3)
+    # send amica response
     socket.emit("msg_from_flask", res, to=sid)
+
+#@socket.on('get_chat_log')
+#def get_chat_log(token):
+#    sid= request.sid
+#    token = decode_token(token)
+#    id = token['sub']['id']['$oid']
+#    res = chat_log.Chat_log.get_log(id)
+#    socket.emit('chat_log_from_flask', res,to=sid)
 
 @socket.event
 def disconnect(sid):

@@ -1,32 +1,51 @@
 from application import app
+import datetime
 from mongoengine import connect, Document, StringField, DateTimeField
 connect(host=app.config["DB_URI"])
 
 class Journal (Document):
     user_id = StringField(requireed=True)
     journal_body = StringField(required=True)
-    timestamp = DateTimeField(required=True, default=datetime.utcnow)
+    timestamp = DateTimeField(required=True, default=datetime.datetime.utcnow)
 
 
+    meta = {
+        "indexes": ["-timestamp"]
+    }
 
 # This method saves a users jounral entry.
-    def saveJounral(data):
+    def save_journal(data):
         journal = Journal(
             user_id = data['user_id'],
             journal_body = data['journal_body']
         )
         if journal.save():
             res = {
+                
                 "user_id" : journal['user_id'],
-                "journal_body" : journal['journal_body']
+                "journal_body" : journal['journal_body'],
+                "timestamp" : journal.timestamp.isoformat()
             }
             return res
         # If there is an error saving, method will return this error
         return {"error":"Sorry! Failed to save journal entry","status":400}
 
 # this method gets all the journal entries according to the user's id.
-def getAllJournals(data):
-    if Journal.objects(user_id=data['user_id']):
-        res  = Journal.objects(user_id=data['user_id'])
+def get_all_journals(data):
+    if Journal.objects(user_id=data):
+        journals  = Journal.objects(user_id=data)
+        res = {
+            "journals":[],
+            "status": 200
+        }
+        for journal in journals:
+            id = str(journal['id'])
+            j = {
+                "id":id,
+                "user_id":journal.user_id,
+                "journal_body":journal.journal_body,
+                "timestamp": journal.timestamp
+            }
+            res['journals'].append(j)
         return res
     return {"error":"Sorry! Could not retrieve journal entry"}

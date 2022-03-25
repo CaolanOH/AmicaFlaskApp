@@ -68,7 +68,7 @@ class User(Document):
                         }
             token = create_access_token(identity=Util.parse_json(user_dict))
             res = {
-                "id": user["id"],
+                #"id": user["id"],
                 "username": user['username'],
                 "email": user['email'],
                 "access_token": token,

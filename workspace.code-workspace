@@ -20,6 +20,9 @@
     },
     {
       "path": "../chatbot-v2"
+    },
+    {
+      "path": "../../../AdvancedJavaScript/MyReactApps/react-blog-app"
     }
   ],
   "settings": {}
