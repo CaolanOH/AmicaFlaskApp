@@ -13,12 +13,6 @@ class Chat_log (Document):
 # have a chat log it creates one, appends the message to the chat_log ListField and saves.
     def saveMessage(data):
         user_id = data['user_id']
-        #msg = {
-        #    "msg":data['msg'],
-        #    "is_user": data['is_user'],
-        #    "timestamp": data['timestamp'],
-        #    "context": data['context']
-        #}
         if Chat_log.objects(user_id=user_id):
             chat = Chat_log.objects(user_id=user_id).get()
          
@@ -44,6 +38,7 @@ class Chat_log (Document):
                 "status": 200
             }
             return chat_log
+        # Catch all error incase anything else fails
         return {"error":"Sorry! Unable to retrieve chat log","status":401}
             
         

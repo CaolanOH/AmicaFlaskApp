@@ -13,7 +13,9 @@ class Journal (Document):
         "indexes": ["-timestamp"]
     }
 
-# This method saves a users jounral entry.
+# This method saves a users jounral entry. It takes in the journal entry information as data.
+# A journal object is created form the data passed in. If the save is successful a res object is
+# is returned. If it fails an error is returned.
     def save_journal(data):
         journal = Journal(
             user_id = data['user_id'],
@@ -21,19 +23,18 @@ class Journal (Document):
         )
         if journal.save():
             res = {
-                
                 "user_id" : journal['user_id'],
                 "journal_body" : journal['journal_body'],
-                "timestamp" : journal.timestamp.isoformat()
+                "timestamp": journal['timestamp']
             }
             return res
-        # If there is an error saving, method will return this error
+        # Catch all error incase anything else fails
         return {"error":"Sorry! Failed to save journal entry","status":400}
 
 # this method gets all the journal entries according to the user's id.
 def get_all_journals(data):
-    if Journal.objects(user_id=data):
-        journals  = Journal.objects(user_id=data)
+    journals  = Journal.objects(user_id=data).order_by("-timestamp")
+    if journals:
         res = {
             "journals":[],
             "status": 200

@@ -1,6 +1,4 @@
 from datetime import timedelta
-
-
 class Config(object):
     DEBUG = False
     TESTING = False

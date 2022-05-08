@@ -1,99 +1,129 @@
-{"intents": [
-    {"tag": "greeting",
-     "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day", "Whats up"],
-     "responses": ["Hello!", "Good to see you again!", "Hi there, how can I help?"],
-     "context_set": [{
-         "name":"script01",
-         "response": ["Would you like to log you mood?"]
-     },
-     {
-        "name":"script01",
-        "response": ["Would you like to log you mood?"]
-     },
-     {
-        "name":"script01",
-        "response": ["Would you like to log you mood?"]
-     }]
-    },
-    {"tag": "goodbye",
-     "patterns": ["cya", "See you later", "Goodbye", "I am Leaving", "Have a Good day"],
-     "responses": ["`Sad to see you go @ :(", "Talk to you later", "Goodbye!`"],
-     "context_set": [{
-        "name":"script01",
-        "response": ["Would you like to log you mood?"]
-    },
-    {
-       "name":"script01",
-       "response": ["Would you like to log you mood?"]
-    },
-    {
-       "name":"script01",
-       "response": ["Would you like to log you mood?"]
-    }]
-    },
-    {"tag": "age",
-     "patterns": ["how old", "how old is coalan", "what is your age", "how old are you", "age?"],
-     "responses": ["I am 25 years old!", "25 years young!"],
-     "context_set": [{
-        "name":"script01",
-        "response": ["Would you like to log you mood?"]
-    },
-    {
-       "name":"script01",
-       "response": ["Would you like to log you mood?"]
-    },
-    {
-       "name":"script01",
-       "response": ["Would you like to log you mood?"]
-    }]
-    },
-    {"tag": "name",
-     "patterns": ["what is your name", "what should I call you", "whats your name?"],
-     "responses": ["You can call me Caolan.", "I'm Caolan!", "I'm Caolan aka Joner."],
-     "context_set": [{
-        "name":"script01",
-        "response": ["Would you like to log you mood?"]
-    },
-    {
-       "name":"script01",
-       "response": ["Would you like to log you mood?"]
-    },
-    {
-       "name":"script01",
-       "response": ["Would you like to log you mood?"]
-    }]
-    },
-    {"tag": "shop",
-     "patterns": ["Id like to buy something", "whats on the menu", "what do you reccommend?", "could i get something to eat"],
-     "responses": ["We sell chocolate chip cookies for $2!", "Cookies are on the menu!"],
-     "context_set": [{
-        "name":"script01",
-        "response": ["Would you like to log you mood?"]
-    },
-    {
-       "name":"script01",
-       "response": ["Would you like to log you mood?"]
-    },
-    {
-       "name":"script01",
-       "response": ["Would you like to log you mood?"]
-    }]
-    },
-    {"tag": "hours",
-     "patterns": ["when are you guys open", "what are your hours", "hours of operation"],
-     "responses": ["We are open 7am-4pm Monday-Friday!"],
-     "context_set": [{
-        "name":"script01",
-        "response": ["Would you like to log you mood?"]
-    },
-    {
-       "name":"script01",
-       "response": ["Would you like to log you mood?"]
-    },
-    {
-       "name":"script01",
-       "response": ["Would you like to log you mood?"]
-    }]
-    }
-]
+{
+   "intents": [
+       {
+           "tag": "greeting",
+           "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day", "Whats up", "Hi Amica", "Amica"],
+           "responses": ["Hello!", "Good to see you again!", "Hi there, how can I help?", "Hey! Amica here, what can I do for you?"],
+           "context_set": "",
+           "action":""
+       },
+       {
+           "tag": "goodbye",
+           "patterns": ["cya", "See you later", "Goodbye","I am going", "I am Leaving", "Have a Good day","Okay, see you soon", "Catch you later", "chat soon bye", "see you later alligator", "bye", "I have to go"],
+           "responses": ["Goodbye", "Talk to you later!", "Chat soon, bye!", "in a while crocodile!", "Nice chat, don't forget you can log your mood or add to your journal whenever you want!"],
+           "context_set": "",
+           "action":""
+       },
+       {   
+           "tag": "name",
+           "patterns": ["what is your name", "what should I call you", "whats your name","what are you called","do you have a name","name","what do people call you", "why are you called amica"],
+           "responses": ["My name is Amica.","Amica is my name.","Amica! It originates from the latin word for friend."],
+           "context_set": "",
+           "action":""
+       },
+       {
+           "tag": "age",
+           "patterns": ["how old", "what is your age", "how old are you", "age?","when were you created?","what age are you?"],
+           "responses": ["According to GitHub my first commit was on the January 30th 2022 but I have been on my creators hard drive a lot longer.","I'm as old as time itself."],
+           "context_set": "",
+           "action":""
+       }, 
+       {
+           "tag": "mood",
+           "patterns": ["I would like to log my mood", "log mood", "Can I log my mood","Can I save my mood","I want to log my mood","I want to save my mood"],
+           "responses": ["No problem, here you go!","Take a minute, try to find the emotion that best describes it and use the text box to go into further detail if you need to.", "Here is the mood button."],
+           "action":"mood"
+       },  
+       {   
+           "tag": "journal",
+           "patterns": ["I would like to use the journal","Can I make a journal entry","Can I save a journal entry","use the journal"],
+           "responses": ["Sure thing! Id love to hear what going on", "Here is your personal journal."],
+           "action":"journal"
+       },
+       {   
+           "tag": "depressed_1",
+           "patterns": ["I'm feeling depressed.","I am depressed.","I think I am going through some depression.", "I could be depressed","Can you help with depression?"],
+           "responses": ["Hmm, okay talk to me about it. How are you feeling?"],
+           "context_set": "depression",
+           "action":""
+       },
+       {   
+           "tag": "depressed_2",
+           "patterns": ["I think I am going through some depression.","I dont feel anything.","Whats the point in anything?"],
+           "responses": ["I think we should log your mood. It's good to keep track of it at times like these. Is there anything in particular that could be causing this? Work, school, relationships?"],
+           "context_filter": "depression",
+           "context_set":"depression_cause",
+           "action":"mood"
+       },
+       {   
+           "tag": "depressed_3",
+           "patterns": ["I'm feeling depressed because of my family.","I am depressed. because of my family.","I am depressed. because of my friends.","I'm feeling depressed because of my friends."],
+           "responses": ["Relationship dynamics can often be complicated. Here's an idea! Create a journal entry and say how you feel. Journaling can be quite theraputic, I encourage you to use it going forward."],
+           "context_filter": "depression_cause",
+           "context_set":"depression_cause_relationship",
+           "action":"journal"
+       },
+       {   
+           "tag": "depressed_4",
+           "patterns": ["Work is causing my depression","I think work is the source of my depression","Work is making me depresseds"],
+           "responses": ["Work is a common cause of depression. Sometimes we are given too much responsibility, we don't click with others in the work space or the work is just draining. Most people can't just up and quite their job. It can make us feel trapped. I think you should use th journal to talk about your day. Say how you feel at the end of everyday. I'd also recommend loggin your mood as soon as its quitting time so we can see how work affects your mood."],
+           "context_filter": "depression_cause",
+           "context_set":"depression_cause_work",
+           "action":"journal"
+       },
+       {   
+           "tag": "depressed_5",
+           "patterns": ["I think I will end it","I want to hurt myself", "I dont want to continue living","I don't see a tomorrow","I want to self harm"],
+           "responses": ["In times like these the first step to take is to accept help from others. I know it is hard see down the road at the moment, but I urge you to use the S.O.S button. There you will find resources I think will assist in this time of need."],
+           "context_filter": "depression",
+           "context_set":"depression_emergency",
+           "action":"journal"
+       },
+       {   
+           "tag": "depressed_6",
+           "patterns": ["School is causing my depression","It is school"],
+           "responses": ["Reach out! Educational institutions have a lot resources to deal with student issues. Think about contacting your favorite teacher or the school nurse. If it's the work load use the journal to creates lists!"],
+           "context_filter": "depression",
+           "context_set":"depression_cause_school",
+           "action":"journal"
+       },
+       {
+           "tag": "anxiety_1",
+           "patterns": ["I'm feeling anxious.","I am anxious", "Can you help with anxiety","I am having trouble with my anxiety"],
+           "responses": ["Thanks for letting me know. I just need know a little more. Have you been feeling like this for sometime or has something happened recently?"],
+           "context_set":"anxiety",
+           "action":"" 
+       },
+       {
+           "tag": "anxiety_2",
+           "patterns": ["I have been dealing with this anxiety for some time","I have been anxious for a long time"],
+           "responses": ["Anxiety can manifest over time. It is important to track stressors over time to show potential patterns that you can acknowledge going forward. Use your journal to recount your day. I have nice wind-down routine that you could do at the end your day? Would you like to hear?"],
+           "context_filter": "anxiety",
+           "context_set":"anxiety_cause_longterm",
+           "action":"journal" 
+       },
+       {
+            "tag": "anxiety_2",
+            "patterns": ["Yes, I would like to hear the relaxation routine","Tell me the relaxation routine"],
+            "responses": ["okie dokie, so this routine is excellent after long day or when tension has been building for some time. Turn off your phone, get into a comfortable position or even lie down. Take slow deep breaths. Start from the feet up, with every breath feel your muscles get looser and looser. Work up through your body until get to your head. Before your do this routine log your mood before and after!"],
+            "context_filter": "anxiety_cause_longterm",
+            "context_set":"anxiety_cause_longterm_2",
+            "action":"mood" 
+        },
+       {
+           "tag": "anxiety_3",
+           "patterns": ["This anxiety is recent","My anxiety has be brought on now", "I'm overwhelmed"],
+           "responses": [""],
+           "context_filter": "anxiety",
+           "context_set":"anxiety_cause_shortterm",
+           "action":"script" 
+       },
+       {
+           "tag": "anxiety_4",
+           "patterns": ["I'm having an anxiety attack","I am freaking out"],
+           "responses": ["You need stop. Take a deep breath and try focus on your breathing. In your mind make a list of all the things around you. When you have done that, press the S.O.S button. You will find contact information for services that can assist you."],
+           "context_filter": "anxiety",
+           "action":"" 
+       }
+   ]
 }

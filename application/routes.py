@@ -2,7 +2,7 @@ from application import app, models, socket, chatbot, chat_log, mood_log, Journa
 from flask import jsonify, request, make_response
 from flask_jwt_extended import JWTManager,jwt_required, get_jwt_identity, decode_token   
 import datetime
-#jwt = JWT(app, models.User.authenticate, models.User.identity)
+
 jwtManager = JWTManager(app)
 
 
@@ -17,9 +17,12 @@ def register():
     # Requesting JSON from request and using get_json() to parse it to a python Dict
     req = request.get_json()
     # Calling the saveUser() from the User model and passing it the python Dict. The response of createUser() is assigned to response
-    response = models.User.saveUser(req)
+    register = models.User.saveUser(req)
+    if register:
+        authenticate = models.User.authenticate(req)
+    
     # Changing python Dict from response using Jsonify and return JSON response ot client
-    return make_response(jsonify(response), response['status'])
+    return make_response(jsonify(authenticate), authenticate['status'])
 
 # Login route
 @app.route('/users/login', methods=['POST'])
@@ -32,18 +35,6 @@ def login():
      # Changing python Dict from response using Jsonify and return JSON response ot client
   
     return make_response(jsonify(response), response['status'])
-
-# Chat log route
-#@app.route('/users/chat_log', methods=['GET'])
-#@jwt_required()
-#def get_chat_log():
-#    identity = get_jwt_identity()
-#    id = identity['id']['$oid']
-#    print(id)
-#    response = chat_log.Chat_log.get_log(id)
-#
-#    return make_response(jsonify(response), response['status'])
-
 
 
 # Mood Routes
@@ -67,16 +58,28 @@ def create_mood():
     print(id)
     print("///// Printing mood /////")
     print(mood)
-    response = mood_log.Mood.save_mood(mood)
+    md = {
+        "user_id": id,
+        "mood":mood['mood'],
+        "description":mood['description']
+    }
+    response = mood_log.Mood.save_mood(md)
     return make_response(jsonify(response), response['status'])
 
 ## Journal Routes
 @app.route('/users/journal', methods=['POST'])
 @jwt_required()
 def create_journal_entry():
+    data = request.get_json()
     identity = get_jwt_identity()
-    journal_entry = request.get_json()
-    response = Journal.Journal.save_journal(journal_entry)
+    id  = identity['id']['$oid']
+    print(id)
+    print(data)
+    journal = {
+        "user_id": id,
+        "journal_body": data['journal_body']
+    }
+    response = Journal.Journal.save_journal(journal)
     return  make_response(jsonify(response))
 
 @app.route('/users/journal', methods=['GET'])
@@ -89,6 +92,15 @@ def get_journal_entry():
     response = Journal.get_all_journals(id)
 
     return make_response(jsonify(response))
+
+# Chat Log Routes
+@app.route('/users/chat_log', methods=['GET'])
+@jwt_required()
+def get_chat_log():
+    identity = get_jwt_identity()
+    id  = identity['id']['$oid']
+    res = chat_log.Chat_log.get_log(id)
+    return make_response(jsonify(res))
 
 
 #       **** Test Routes / Controllers ****
@@ -135,9 +147,9 @@ def connect(auth):
     sid = request.sid
     user = auth
     identity = get_jwt_identity()
+    print(identity)
     print("WebSocket connection established with React Native app")
   
-    print(identity)
     
 
 @socket.on('user_login')
@@ -158,7 +170,6 @@ def message_sent(message):
         "msg":message['msg'],
         "is_user": message['is_user'],
         "timestamp": message['timestamp'],
-        "context": message['context']
     }
     chat_log.Chat_log.saveMessage(msg)
     # Save user message with id here.
@@ -171,12 +182,10 @@ def message_sent(message):
         "msg": amicaResponse['response'],
         "is_user": False,
         "timestamp": timestampStr,
-        "context": amicaResponse['context']
+        "action": amicaResponse['action']
     }
     # Save amica message here
     chat_log.Chat_log.saveMessage(res)
-    #socket.sleep(0.3)
-    # send amica response
     socket.emit("msg_from_flask", res, to=sid)
 
 #@socket.on('get_chat_log')
@@ -185,9 +194,10 @@ def message_sent(message):
 #    token = decode_token(token)
 #    id = token['sub']['id']['$oid']
 #    res = chat_log.Chat_log.get_log(id)
-#    socket.emit('chat_log_from_flask', res,to=sid)
+#    # socket.emit('chat_log_from_flask', res,to=sid)
+#    print(f"get chat log")
 
 @socket.event
-def disconnect(sid):
+def disconnect():
     sid = request.sid
     print(f"User {sid} disconnected")

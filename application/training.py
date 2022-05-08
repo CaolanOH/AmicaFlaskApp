@@ -14,15 +14,11 @@ from pathlib import Path
 # This stores whatever the working directory is to the variable working__directory
 working_directory = Path(__file__).absolute().parent
 
-
-
-
-## ****** NLP Text Processing on intents json file ******
+## ****** Cleaning Data & NLP Text Processing on intents json file ******
 
 # Initializing Lemmatizer from nltk
-## Lemmatization is more complex than stemming but is more accurate and has less chances of error
+## Declaring instance of lemmatizer from NLTK
 lemmatizer = WordNetLemmatizer()
-
 # Load in intents
 intents = json.loads(open('intents.json').read())
 
@@ -76,12 +72,10 @@ for wt in words_and_tags:
 
 
 ## ****** Preparing training data for model ******
-
 # Shuffling training data
 random.shuffle(training)
 # training data must be converted to a numpy array for the model 
 training = np.array(training, dtype=object)
-
 #Splitting data into traing sets
 # explain the python array short hand
 train_x = list(training[:, 0])
@@ -89,12 +83,9 @@ train_y = list(training[:, 1])
 
 
 ## ****** Building sequential model, training model, saving model ******
-
-
-#Building model
-## Text is a sequence of data so we use a Sequential Model
+# Text is a sequence of data so we use a Sequential Model
 model = Sequential()
-# First layer is a standard 128 neurons. the shape is equal to train_x,  the activation function is a rectitified linear function
+# First layer is a standard 128 neurons. The shape is equal to train_x, the activation function is a rectitified linear function
 model.add(Dense(128, input_shape=(len(train_x[0]),), activation='relu'))
 # Find out about drop out
 model.add(Dropout(0.05))

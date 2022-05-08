@@ -19,19 +19,19 @@ class Mood (Document):
     meta = {
         "indexes": ["-timestamp"]
     }
-
+# save_mood method takes in a data object containing the mood data. A new Mood object
+# is created using the data passed in. If the mood passes the validation a res object
+# is created contain the mood, description, user_id, timestamp and status code is returned.
+# if it fails and error is returned 
     def save_mood(data):
         # Creating Mood Object
         mood = Mood(
             mood = data['mood'],
             description = data['description'],
             user_id = data['user_id'],
-
         )
-
-        # Saving Moode Object to database. If save runs successfully the mood is return. If the savve() fails it returns an error
+        # Saving Moode Object to database. If save runs successfully the mood is return. 
         if mood.save():
-            
             res = {
                 "mood": mood['mood'],
                 "description": mood['description'],
@@ -40,11 +40,13 @@ class Mood (Document):
                 "status": 201
             }
             return res
+        # Catch all error incase anything else fails
         return {"error":"Failed to save mood","status":400}
+
 # This Method takes in a user id and queries the database for moods with that id. It returns an array of moods matching the user id passed in.
     def get_moods(data):
-        if Mood.objects(user_id=data):
-            moods = Mood.objects(user_id=data)
+        moods = Mood.objects(user_id=data).order_by("-timestamp")
+        if moods:
             res = {
                 "moods": [],
                 "status": 200
@@ -60,6 +62,7 @@ class Mood (Document):
                 }
                 res['moods'].append(md)
             return res
+        # Catch all error incase anything else fails
         return {"error":"Sorry! Could not retrieve moods.", "status":400}
 
 
