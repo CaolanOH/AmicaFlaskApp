@@ -4,28 +4,28 @@
            "tag": "greeting",
            "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day", "Whats up", "Hi Amica", "Amica"],
            "responses": ["Hello!", "Good to see you again!", "Hi there, how can I help?", "Hey! Amica here, what can I do for you?"],
-           "context_set": "",
+  
            "action":""
        },
        {
            "tag": "goodbye",
            "patterns": ["cya", "See you later", "Goodbye","I am going", "I am Leaving", "Have a Good day","Okay, see you soon", "Catch you later", "chat soon bye", "see you later alligator", "bye", "I have to go"],
            "responses": ["Goodbye", "Talk to you later!", "Chat soon, bye!", "in a while crocodile!", "Nice chat, don't forget you can log your mood or add to your journal whenever you want!"],
-           "context_set": "",
+       
            "action":""
        },
        {   
            "tag": "name",
            "patterns": ["what is your name", "what should I call you", "whats your name","what are you called","do you have a name","name","what do people call you", "why are you called amica"],
            "responses": ["My name is Amica.","Amica is my name.","Amica! It originates from the latin word for friend."],
-           "context_set": "",
+       
            "action":""
        },
        {
            "tag": "age",
            "patterns": ["how old", "what is your age", "how old are you", "age?","when were you created?","what age are you?"],
            "responses": ["According to GitHub my first commit was on the January 30th 2022 but I have been on my creators hard drive a lot longer.","I'm as old as time itself."],
-           "context_set": "",
+  
            "action":""
        }, 
        {

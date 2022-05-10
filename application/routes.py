@@ -29,7 +29,7 @@ def register():
 def login():
     # Requesting JSON from request and using get_json() to parse it to a python Dict
     req = request.get_json()
-   
+    print(req)
     # Calling the saveUser() from the User model and passing it the python Dict. The response of createUser() is assigned to response
     response = models.User.authenticate(req)
      # Changing python Dict from response using Jsonify and return JSON response ot client
@@ -87,8 +87,6 @@ def create_journal_entry():
 def get_journal_entry():
     identity = get_jwt_identity()
     id  = identity['id']['$oid']
-    print("/// This is the user id to get moods with")
-    print(id)
     response = Journal.get_all_journals(id)
 
     return make_response(jsonify(response))

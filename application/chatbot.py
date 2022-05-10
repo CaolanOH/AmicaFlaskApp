@@ -67,12 +67,20 @@ def get_response(intents_list, intents_json):
                 context['context'] = i['context_set']
                 print(f'this is the current context : {context}')
                 # check if this intent is contextual and applies to this user's conversation
-                if not 'context_filter' in i or 'context' in context and 'context_filter' in i and i['context_filter']== i['context']:
+                if not 'context_filter' in i or \
+                        (context in context and 'context_filter' in i and i['context_filter'] == context['userID']):
                     result = {
                         "tag":i['tag'],
                         "response": random.choice(i['responses']),
                         "action": i['action']
                     }
+                    break
+            else:
+                result = {
+                    "response":random.choice(i['responses']),
+                    "action":i['action']
+                }
+                    
     return result
 
 # if not 'context_filter' in i or 'context' in context and 'context_filter' in i and i['context_filter'] == context['context']: 
@@ -96,21 +104,33 @@ def get_response(intents_list, intents_json):
 #        else:
 #            print("I dont't understand")
 
+# def get_response(ints, intents_json):
+#     tag = ints[0]['intent']
+#     list_of_intents = intents_json['intents']
+#     for i in list_of_intents:
+#         if(i['tag']== tag):
+#             result = {
+#                 "response": random.choice(i['responses']),
+#                 "action": i['action']
+#             }
+#             break
+#     return result
+
 #chat() 
-def chat():
-    print("*** Chat bot is ready to chat ****")
-    print(tags)
-    while True:
-        user_message = input("User : ")
-        if user_message.lower() == "quit":
-            break
-        ints = predict_tag(user_message)
-        bot_response = get_response(ints, intents)
-        print(f'Bot : {bot_response}')
+# def chat():
+#     print("*** Chat bot is ready to chat ****")
+#     print(tags)
+#     while True:
+#         user_message = input("User : ")
+#         if user_message.lower() == "quit":
+#             break
+#         ints = predict_tag(user_message)
+#         bot_response = get_response(ints, intents)
+#         print(f'Bot : {bot_response}')
 
-chat()
+# chat()
 
-# def chat(message):
-#    tags = predict_tag(message)
-#    bot_response = get_response(tags, intents)
-#    return bot_response
+def chat(message):
+   tags = predict_tag(message)
+   bot_response = get_response(tags, intents)
+   return bot_response
